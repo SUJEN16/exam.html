@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ta">
 <head>
@@ -538,4 +539,56 @@
 
                 let detailsHTML = `<details><summary>📝 சரியான விடைகள் & மதிப்பீட்டு விவரம்</summary><ul>`;
                 detailsHTML += `<li><strong>வினா 1:</strong> ஆ) நிறுவனத்தின் நற்பெயர் (பண்புசார் தரவு) ${q1Answer && q1Answer.value === '1' ? '✅' : '❌'}</li>`;
-                detailsHTML += `<li><strong>வினா 2:</strong
+                detailsHTML += `<li><strong>வினா 2:</strong> ஆ) வகுப்பறையிலுள்ள மாணவர்களின் எண்ணிக்கை (அளவுசார் தரவு) ${q2Answer && q2Answer.value === '1' ? '✅' : '❌'}</li>`;
+                detailsHTML += `<li><strong>வினா 3:</strong> இ) ஒரு நகரத்தின் வெப்பநிலை (35°C) (தொடர் தரவு) ${q3Answer && q3Answer.value === '2' ? '✅' : '❌'}</li>`;
+                detailsHTML += `<li><strong>வினா 4 (4 புள்ளிகள்):</strong> தரவு – மூல உண்மைகள்; தகவல் – செயற்படுத்தப்பட்ட தரவு. (பெற்றது: ${q4Score}/4)</li>`;
+                detailsHTML += `<li><strong>வினா 5 (3 புள்ளிகள்):</strong> சேகரிப்பு → சேமிப்பு/செயற்படுத்தல் → பகுப்பாய்வு/பகிர்வு (பெற்றது: ${q5Score}/3)</li>`;
+                detailsHTML += `<li><strong>வினா 6 (3 புள்ளிகள்):</strong> எ.கா. துல்லியம், காலத்திற்கேற்றது, பொருத்தம் (பெற்றது: ${q6Score}/3)</li>`;
+                detailsHTML += `</ul><p style="margin-top:1rem; font-weight:600;">மொத்தம்: ${totalScore}/${MAX_SCORE} (பகுதி A: ${partAScore}/6, பகுதி B: ${partBScore}/10)</p></details>`;
+
+                correctionDetails.innerHTML = detailsHTML;
+                resultArea.classList.add('show');
+            }
+
+            function handleSubmit() {
+                if (submitted) return;
+                submitted = true;
+                if (timerInterval) clearInterval(timerInterval);
+                evaluateAndShowResults();
+            }
+
+            function resetQuiz() {
+                if (timerInterval) clearInterval(timerInterval);
+                timeLeft = totalTime;
+                submitted = false;
+                updateTimerDisplay();
+
+                document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+                document.querySelectorAll('input[type="text"], textarea').forEach(i => i.value = '');
+
+                resultArea.classList.remove('show');
+                correctionDetails.innerHTML = '';
+                scoreText.innerHTML = '';
+
+                startTimer();
+            }
+
+            // ---------- Event listeners ----------
+            submitBtn.addEventListener('click', handleSubmit);
+            resetBtn.addEventListener('click', resetQuiz);
+
+            // ---------- Page Up / Down buttons ----------
+            document.getElementById('pageUpBtn').addEventListener('click', function() {
+                window.scrollBy({ top: -window.innerHeight * 0.8, behavior: 'smooth' });
+            });
+            document.getElementById('pageDownBtn').addEventListener('click', function() {
+                window.scrollBy({ top: window.innerHeight * 0.8, behavior: 'smooth' });
+            });
+
+            // Init
+            updateTimerDisplay();
+            startTimer();
+        })();
+    </script>
+</body>
+</html>
